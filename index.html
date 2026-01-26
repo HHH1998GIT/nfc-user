@@ -51,9 +51,9 @@
     <script>
         // 【修改这里】替换成你自己的用户信息
         const userList = {
-            "001": {name: "张三", phone: "13800138000", dept: "技术部", email: "zhangsan@xxx.com"},
-            "002": {name: "李四", phone: "13900139000", dept: "市场部", email: "lisi@xxx.com"},
-            "003": {name: "王五", phone: "13700137000", dept: "人事部", email: "wangwu@xxx.com"}
+            "001": {num: "053100000001", name: "张三", phone: "13800138000"},
+            "002": {num: "053100000002", name: "李四", phone: "13900139000"},
+            "003": {num: "053100000003", name: "王五", phone: "13700137000"}
         };
 
         // 新逻辑：读取URL参数里的userid（比如?id=001）
@@ -70,11 +70,10 @@
                 const u = userList[userId];
                 container.innerHTML = `
                     <div class="card">
-                        <div class="title">${u.name} 的个人信息</div>
+                        <div class="title">${u.num} 的信息</div>
                         <div class="info">
+                            智企姓名：<span>${u.name}</span><br>
                             手机号：<span>${u.phone}</span><br>
-                            部门：<span>${u.dept}</span><br>
-                            邮箱：<span>${u.email}</span>
                         </div>
                     </div>
                 `;
