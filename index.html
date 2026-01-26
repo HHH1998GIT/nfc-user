@@ -49,18 +49,22 @@
     <div id="container"></div>
 
     <script>
-        // 【修改这里】把下面的用户信息换成你自己的，ID和名字/信息对应就行
+        // 【修改这里】替换成你自己的用户信息
         const userList = {
             "001": {name: "张三", phone: "13800138000", dept: "技术部", email: "zhangsan@xxx.com"},
             "002": {name: "李四", phone: "13900139000", dept: "市场部", email: "lisi@xxx.com"},
             "003": {name: "王五", phone: "13700137000", dept: "人事部", email: "wangwu@xxx.com"}
-            // 要加更多用户，就按上面的格式加，比如"004": {name: "赵六", ...},
         };
 
-        // 自动读取网址里的用户ID，显示对应信息
+        // 新逻辑：读取URL参数里的userid（比如?id=001）
+        function getUserId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('userid') || '';
+        }
+
+        // 显示用户信息
         function showUserInfo() {
-            const url = window.location.pathname;
-            const userId = url.split('/').pop() || '';
+            const userId = getUserId();
             const container = document.getElementById('container');
             if (userList[userId]) {
                 const u = userList[userId];
