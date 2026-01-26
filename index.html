@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人信息</title>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {
+            font-family: "微软雅黑", Arial;
+            background: #f8f9fa;
+            padding: 30px;
+        }
+        .card {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #212529;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .info {
+            font-size: 18px;
+            line-height: 2.2;
+            color: #495057;
+        }
+        .info span {
+            color: #0d6efd;
+            font-weight: 500;
+        }
+        .error {
+            text-align: center;
+            font-size: 20px;
+            color: #dc3545;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+
+    <script>
+        // 【修改这里】把下面的用户信息换成你自己的，ID和名字/信息对应就行
+        const userList = {
+            "001": {name: "张三", phone: "13800138000", dept: "技术部", email: "zhangsan@xxx.com"},
+            "002": {name: "李四", phone: "13900139000", dept: "市场部", email: "lisi@xxx.com"},
+            "003": {name: "王五", phone: "13700137000", dept: "人事部", email: "wangwu@xxx.com"}
+            // 要加更多用户，就按上面的格式加，比如"004": {name: "赵六", ...},
+        };
+
+        // 自动读取网址里的用户ID，显示对应信息
+        function showUserInfo() {
+            const url = window.location.pathname;
+            const userId = url.split('/').pop() || '';
+            const container = document.getElementById('container');
+            if (userList[userId]) {
+                const u = userList[userId];
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="title">${u.name} 的个人信息</div>
+                        <div class="info">
+                            手机号：<span>${u.phone}</span><br>
+                            部门：<span>${u.dept}</span><br>
+                            邮箱：<span>${u.email}</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = '<div class="error">未找到该用户信息</div>';
+            }
+        }
+        showUserInfo();
+    </script>
+</body>
+</html>
