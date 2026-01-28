@@ -93,54 +93,26 @@
     <div id="container" class="loading">加载中...</div>
 
     <script>
-        // ========== 替换成你的腾讯文档表格链接 ==========
-        const TABLE_URL = "https://docs.qq.com/sheet/你的表格链接"; 
-        // ========== 改完上面就行 ==========
+        // ========== 【只改这里！】用户信息配置区 ==========
+        const userList = {
+            "001": {num: "69657134", name: "顾书强", phone: "15653103644", prod_name: "PON+市话+HGU"},
+            "002": {num: "87207037", name: "冯在磊", phone: "15653103142", prod_name: "市话"},
+            // 新增用户直接按格式加，比如：
+            // "003": {num: "12345678", name: "张三", phone: "13800138000", prod_name: "PON+HGU"},
+        };
+        // ========== 改完上面就行，下面不用动 ==========
 
-        // 读取URL参数里的userid
+        // 读取URL参数里的userid（比如?userid=001）
         function getUserId() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('userid') || '';
         }
 
-        // 从腾讯文档表格获取信息（适配联通专线字段）
-        async function getUserInfoFromTable(userId) {
-            try {
-                const apiUrl = TABLE_URL.replace("/sheet/", "/sheet/export?format=csv&charset=utf-8&") + "&t=" + new Date().getTime();
-                const response = await fetch(apiUrl);
-                const csvText = await response.text();
-                
-                const lines = csvText.split('\n').filter(line => line.trim());
-                const headers = lines[0].split(',').map(h => h.trim());
-                for (let i = 1; i < lines.length; i++) {
-                    const values = lines[i].split(',').map(v => v.trim());
-                    const user = {};
-                    headers.forEach((h, index) => {
-                        user[h] = values[index] || '';
-                    });
-                    if (user.id === userId) {
-                        return {
-                            customerName: user.customerName || '未知',
-                            lineNumber: user.lineNumber || '未知',
-                            manager: user.manager || '未知',
-                            managerPhone: user.managerPhone || '未知',
-                            repairer: user.repairer || '未知',
-                            repairerPhone: user.repairerPhone || '未知'
-                        };
-                    }
-                }
-                return null;
-            } catch (e) {
-                console.error("读取表格失败：", e);
-                return null;
-            }
-        }
-
         // 显示联通专线信息
-        async function showUserInfo() {
+        function showUserInfo() {
             const container = document.getElementById('container');
             const userId = getUserId();
-            const user = await getUserInfoFromTable(userId);
+            const user = userList[userId];
             
             if (user) {
                 container.innerHTML = `
@@ -153,34 +125,23 @@
                         <div class="title-line"></div>
                         <div class="info-list">
                             <div class="info-item">
-                                <span class="info-label">客户名称</span>
-                                <span class="info-value">${user.customerName}</span>
+                                <span class="info-label">客户编号</span>
+                                <span class="info-value">${user.num}</span>
                             </div>
                             <div class="info-item">
-                                <span class="info-label">专线号</span>
-                                <span class="info-value">${user.lineNumber}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">客户经理</span>
-                                <span class="info-value">${user.manager}</span>
+                                <span class="info-label">客户姓名</span>
+                                <span class="info-value">${user.name}</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">联系电话</span>
                                 <span class="info-value red-text">
                                     <img src="https://img1.imgtp.com/2024/07/16/2Z0D0lQK.png" class="phone-icon" alt="电话图标">
-                                    ${user.managerPhone}
+                                    ${user.phone}
                                 </span>
                             </div>
                             <div class="info-item">
-                                <span class="info-label">智企维修专员</span>
-                                <span class="info-value">${user.repairer}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">工作电话</span>
-                                <span class="info-value red-text">
-                                    <img src="https://img1.imgtp.com/2024/07/16/2Z0D0lQK.png" class="phone-icon" alt="电话图标">
-                                    ${user.repairerPhone}
-                                </span>
+                                <span class="info-label">产品类型</span>
+                                <span class="info-value">${user.prod_name}</span>
                             </div>
                         </div>
                         <div class="copyright">© 2026 中国联合网络通信有限公司 版权所有</div>
@@ -191,6 +152,7 @@
             }
         }
 
+        // 页面加载时显示信息
         showUserInfo();
     </script>
 </body>
