@@ -9,83 +9,58 @@
         body {
             font-family: "微软雅黑", Arial;
             background: #f8f9fa;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-        }
-        /* 联通风格卡片 */
-        .card {
-            max-width: 400px;
-            width: 100%;
-            background: white;
-            border-radius: 10px;
-            padding: 25px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        /* 联通标题+logo */
-        .title-bar {
-            text-align: center;
-            margin-bottom: 20px;
+            padding: 30px 20px;
             position: relative;
+            overflow-x: hidden;
         }
-        .unicom-logo {
-            width: 50px;
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #e60012; /* 联通红色 */
-        }
-        .title-line {
-            height: 2px;
-            background-color: #e60012;
-            margin: 10px 0 20px 0;
-        }
-        /* 信息列表 */
-        .info-list {
+        /* 核心：对话框样式 */
+        .dialog-box {
+            max-width: 500px;
+            width: 100%;
+            background: #fff;
+            border-radius: 16px;
+            border: 2px solid #e60012; /* 联通红边框 */
+            padding: 30px 25px;
+            box-shadow: 0 4px 15px rgba(230, 0, 18, 0.2);
+            margin: 0 auto;
+            line-height: 2;
             font-size: 16px;
-            line-height: 2.5;
             color: #333;
         }
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 5px;
-        }
-        .info-label {
-            font-weight: 500;
-        }
-        .info-value {
-            color: #000;
-            text-align: right;
-        }
-        .phone-icon {
-            width: 18px;
-            vertical-align: middle;
-            margin-right: 5px;
-        }
-        .red-text {
+        /* 联通红色高亮文字 */
+        .unicom-red {
             color: #e60012;
             font-weight: bold;
         }
-        /* 版权信息 */
-        .copyright {
-            font-size: 12px;
-            color: #999;
-            text-align: center;
-            margin-top: 25px;
+        /* 右下角卡通形象：固定定位，可调整大小/位置 */
+        .cartoon-avatar {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 120px; /* 卡通图宽度，可调整 */
+            height: auto;
+            z-index: 999;
+            border-radius: 50%; /* 圆形裁剪，想要方形可删除这行 */
         }
         /* 加载/错误提示 */
         .loading, .error {
             text-align: center;
             font-size: 18px;
             color: #e60012;
+            margin-top: 50px;
+        }
+        /* 适配手机端：缩小卡通图和对话框内边距 */
+        @media (max-width: 480px) {
+            .dialog-box {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+            .cartoon-avatar {
+                width: 90px;
+                right: 10px;
+                bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -93,14 +68,18 @@
     <div id="container" class="loading">加载中...</div>
 
     <script>
-        // ========== 【只改这里！】用户信息配置区 ==========
+        // ========== 【只改这里！】配置区 - 3处可修改 ==========
         const userList = {
-            "001": {num: "69657134", name: "顾书强", phone: "15653103644", prod_name: "PON+市话+HGU"},
-            "002": {num: "87207037", name: "冯在磊", phone: "15653103142", prod_name: "市话"},
-            // 新增用户直接按格式加，比如：
-            // "003": {num: "12345678", name: "张三", phone: "13800138000", prod_name: "PON+HGU"},
+            "001": {num: "69657134",status:"正常",user_name: "王",  zhijia_name: "刘希壮", phone: "67604888", prod_name: "PON+市话+HGU"},
+            "002": {num: "87207037",status:"欠费",user_name: "李",  zhijia_name: "刘希壮", phone: "67604888",prod_name: "市话"},
+            // 新增用户：直接按格式添加，例：
+            // "003": {num: "12345678",status:"正常",user_name: "张",  zhijia_name: "张三", phone: "13800138000", prod_name: "PON+HGU"},
         };
-        // ========== 改完上面就行，下面不用动 ==========
+        // 【修改卡通形象】替换下面的图片地址即可（支持本地图片/网络图片）
+        const CARTOON_IMG_URL = "https://img0.baidu.com/it/u=1234567890,1234567890&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500";
+        // 【可选】修改卡通图大小，单位px（手机端会自动缩小）
+        const CARTOON_SIZE = 120;
+        // ========== 改完上面就行，下面代码无需修改 ==========
 
         // 读取URL参数里的userid（比如?userid=001）
         function getUserId() {
@@ -108,47 +87,30 @@
             return urlParams.get('userid') || '';
         }
 
-        // 显示联通专线信息
+        // 显示对话框式客户信息
         function showUserInfo() {
             const container = document.getElementById('container');
             const userId = getUserId();
             const user = userList[userId];
             
             if (user) {
+                // 拼接对话框内容，完全匹配要求的文案格式
                 container.innerHTML = `
-                    <div class="card">
-                        <div class="title-bar">
-                            <!-- 联通logo（自动加载） -->
-                            <div class="title">联通专线客户服务信息</div>
-                        </div>
-                        <div class="title-line"></div>
-                        <div class="info-list">
-                            <div class="info-item">
-                                <span class="info-label">客户编号</span>
-                                <span class="info-value">${user.num}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">客户姓名</span>
-                                <span class="info-value">${user.name}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">联系电话</span>
-                                <span class="info-value red-text">${user.phone}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">产品类型</span>
-                                <span class="info-value">${user.prod_name}</span>
-                            </div>
-                        </div>
-                        <div class="copyright">© 2026 中国联合网络通信有限公司 版权所有</div>
+                    <div class="dialog-box">
+                        尊敬的${user.user_name}先生/女士，感谢您使用联通${user.prod_name}业务<br>
+                        您的业务号码是${user.num}，状态${user.status}<br>
+                        您的智企工程师是${user.zhijia_name}，联系方式<span class="unicom-red">${user.phone}</span>
                     </div>
+                    <!-- 右下角卡通形象 -->
+                    <img src="${CARTOON_IMG_URL}" alt="卡通形象" class="cartoon-avatar" style="width:${CARTOON_SIZE}px;">
                 `;
             } else {
-                container.innerHTML = '<div class="error">未找到该专线客户信息</div>';
+                // 未找到用户时的错误提示
+                container.innerHTML = '<div class="error">未找到该专线客户信息，请检查userid参数是否正确</div>';
             }
         }
 
-        // 页面加载时显示信息
+        // 页面加载时立即显示信息
         showUserInfo();
     </script>
 </body>
