@@ -43,12 +43,12 @@
             height: 5px;
             background: linear-gradient(90deg, #e60012, #ff4d58, #e60012);
         }
-        /* 联通图标样式（顶部左侧） */
+        /* 联通图标样式（顶部左侧）- 放大尺寸 */
         .unicom-icon {
             position: absolute;
             top: 15px;
             left: 20px;
-            width: 45px; /* 图标大小，可调整 */
+            width: 60px; /* 从45px放大到60px，可根据需求调整 */
             height: auto;
             z-index: 10;
         }
@@ -94,16 +94,16 @@
             66% {content: "...";}
             100% {content: "";}
         }
-        /* 手机端适配（保证小屏文字依然清晰） */
+        /* 手机端适配（保证小屏文字依然清晰）- 同步放大图标 */
         @media (max-width: 480px) {
             .dialog-box {
                 padding: 30px 25px;
                 font-size: 18px; /* 手机端仅小幅缩小 */
                 line-height: 2.6;
-                padding-top: 50px; /* 给手机端图标留空间 */
+                padding-top: 60px; /* 图标放大后，增加顶部内边距避免遮挡 */
             }
             .unicom-icon {
-                width: 35px;
+                width: 50px; /* 手机端从35px调整为50px，适配放大后的比例 */
                 top: 10px;
                 left: 15px;
             }
@@ -134,7 +134,7 @@
         };
         // 卡通形象地址（支持本地/GitHub在线地址）
         const CARTOON_IMG_URL = "image/0.jpg";
-        // 联通图标地址（你提供的路径：image/OIP-C.webp）
+        // 联通图标地址（你提供的路径：image/28925601_135535194105_3.jpg）
         const UNICOM_ICON_URL = "image/28925601_135535194105_3.jpg";
         // 卡通图大小（px）
         const CARTOON_SIZE = 120;
