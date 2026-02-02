@@ -43,6 +43,15 @@
             height: 5px;
             background: linear-gradient(90deg, #e60012, #ff4d58, #e60012);
         }
+        /* 联通图标样式（顶部左侧） */
+        .unicom-icon {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            width: 45px; /* 图标大小，可调整 */
+            height: auto;
+            z-index: 10;
+        }
         /* 联通红色高亮文字（醒目但不刺眼） */
         .unicom-red {
             color: #e60012;
@@ -91,6 +100,12 @@
                 padding: 30px 25px;
                 font-size: 18px; /* 手机端仅小幅缩小 */
                 line-height: 2.6;
+                padding-top: 50px; /* 给手机端图标留空间 */
+            }
+            .unicom-icon {
+                width: 35px;
+                top: 10px;
+                left: 15px;
             }
             .unicom-red {
                 font-size: 19px;
@@ -119,6 +134,8 @@
         };
         // 卡通形象地址（支持本地/GitHub在线地址）
         const CARTOON_IMG_URL = "0.jpg";
+        // 联通图标地址（你提供的路径：mage/OIP-C.webp）
+        const UNICOM_ICON_URL = "mage/OIP-C.webp";
         // 卡通图大小（px）
         const CARTOON_SIZE = 120;
         // ========== 改完上面就行，下面无需修改 ==========
@@ -138,9 +155,11 @@
             if (user) {
                 container.innerHTML = `
                     <div class="dialog-box">
+                        <!-- 联通品牌图标 -->
+                        <img src="${UNICOM_ICON_URL}" alt="联通图标" class="unicom-icon">
                         尊敬的${user.user_name}先生/女士，感谢您使用联通${user.prod_name}业务<br>
                         您的业务号码是${user.num}，状态${user.status}<br>
-                        您的客户经理是${user.khjl_name}，联系方式<span class="unicom-red">${user.khjl_phone}<br>
+                        您的客户经理是${user.khjl_name}，联系方式<span class="unicom-red">${user.khjl_phone}</span><br>
                         您的智企工程师是${user.zhijia_name}，联系方式<span class="unicom-red">${user.zhijia_phone}</span>
                     </div>
                     <img src="${CARTOON_IMG_URL}" alt="卡通形象" class="cartoon-avatar" style="width:${CARTOON_SIZE}px;">
