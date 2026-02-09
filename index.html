@@ -43,12 +43,16 @@
             height: 5px;
             background: linear-gradient(90deg, #e60012, #ff4d58, #e60012);
         }
-        /* 品牌卡片样式 */
+        /* 品牌卡片样式 - 核心修改：justify-content: center 让内容整体居中 */
         .brand-card {
             display: flex;
             align-items: center;
+            /* 新增：让图标+文字整体在卡片中水平居中 */
+            justify-content: center;
             gap: 15px;
             padding: 15px 20px;
+            /* 新增：文字在卡片内居中对齐（兜底） */
+            text-align: center;
         }
         .unicom-icon {
             width: 60px;
@@ -176,7 +180,7 @@
                         <!-- 品牌卡片：联通标志+联通服务 -->
                         <div class="card brand-card">
                             <img src="${UNICOM_ICON_URL}" alt="联通图标" class="unicom-icon">
-                            <div class="brand-text">联通服务</div>
+                            <div class="brand-text">联通客户服务</div>
                         </div>
                         
                         <!-- 客户基础信息卡片 -->
@@ -195,9 +199,9 @@
                         </div>
                         
                         <!-- 版权声明 -->
-                        <div class="copyright">© 2026 中国联通 版权所有</div>
+                        <div class="copyright">©2026中国联通版权所有</div>
                     </div>
-                    <img src="${CARTOON_IMG_URL}" alt="卡通形象" class="cartoon-avatar" style="width:${CARTOON_SIZE}px;">
+                    <img src="${CARTOON_IMG_URL}" alt="通通形象" class="cartoon-avatar" style="width:${CARTOON_SIZE}px;">
                 `;
             } else {
                 container.innerHTML = '<div class="error">未找到该专线客户信息，请检查userid参数是否正确</div>';
