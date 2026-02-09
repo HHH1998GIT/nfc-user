@@ -5,218 +5,264 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>山东联通用户自助服务</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: "微软雅黑", Arial, "Microsoft YaHei UI";
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-            padding: 0 20px;
+            background-color: #f5f5f5;
             min-height: 100vh;
-        }
-
-        /* 顶部标题栏 */
-        .header {
-            background-color: #e60012;
-            color: white;
-            text-align: center;
-            padding: 16px 20px;
-            border-radius: 12px 12px 0 0;
-            font-size: 24px;
-            font-weight: bold;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .header img {
-            width: 30px;
-            height: 30px;
-            vertical-align: middle;
-            margin-right: 10px;
-        }
-
-        /* 主容器 */
-        .container {
-            max-width: 550px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
             padding: 20px;
+            color: #333;
         }
-
-        /* 每个功能项 */
-        .item {
-            display: flex;
-            align-items: flex-start;
-            padding: 18px 0;
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e60012 0%, #c40010 100%);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 0 20px 20px;
+        }
+        
+        .intro {
+            padding: 20px 0;
+            line-height: 1.6;
+            font-size: 15px;
+            color: #666;
             border-bottom: 1px solid #eee;
-            transition: background-color 0.2s ease;
         }
-
-        .item:last-child {
+        
+        .intro strong {
+            color: #e60012;
+        }
+        
+        .service-section {
+            margin-top: 20px;
+        }
+        
+        .service-item {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .service-item:last-child {
             border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
-
-        .item:hover {
-            background-color: #f9f9f9;
+        
+        .service-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 16px;
         }
-
-        .item-icon {
-            width: 50px;
-            height: 50px;
-            margin-right: 16px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        .service-button {
+            display: block;
+            width: 100%;
             background-color: #e60012;
             color: white;
+            border: none;
             border-radius: 8px;
-            font-size: 24px;
-        }
-
-        .item-content {
-            flex: 1;
-            font-size: 17px;
-            color: #4a5568;
-        }
-
-        .item-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #e60012;
-            margin-bottom: 6px;
-        }
-
-        .item-desc {
+            padding: 14px;
             font-size: 16px;
-            color: #555;
-            line-height: 1.6;
-        }
-
-        /* 图标字体使用Unicode */
-        .icon-question::before { content: "❓"; }
-        .icon-network::before { content: "🌐"; }
-        .icon-scan::before { content: "🔍"; }
-        .icon-search::before { content: "🔍"; }
-
-        /* 底部版权 */
-        .footer {
-            margin-top: 20px;
+            font-weight: 600;
             text-align: center;
-            font-size: 14px;
-            color: #888;
-            padding: 12px;
-            background-color: #f5f7fa;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        /* 卡通形象 */
-        .cartoon-avatar {
-            position: fixed;
-            right: 20px;
-            bottom: 80px;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid white;
-            outline: 2px solid #e60012;
-            box-shadow: 0 8px 20px rgba(230, 0, 18, 0.15);
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(230, 0, 18, 0.2);
         }
-
-        .cartoon-avatar:hover {
-            transform: scale(1.08) translateY(-4px);
-            box-shadow: 0 12px 28px rgba(230, 0, 18, 0.25);
+        
+        .service-button:hover {
+            background-color: #c40010;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(230, 0, 18, 0.25);
         }
-
-        /* 响应式 */
+        
+        .service-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(230, 0, 18, 0.2);
+        }
+        
+        .highlight {
+            color: #e60012;
+            font-weight: 600;
+        }
+        
+        .code-example {
+            background-color: #f8f8f8;
+            border-left: 3px solid #e60012;
+            padding: 12px 16px;
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #555;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #999;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
+        
+        .footer a {
+            color: #e60012;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .unicom-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
         @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 8px;
+            }
+            
             .header {
-                font-size: 20px;
-                padding: 12px 16px;
+                padding: 20px 15px;
             }
-            .item {
-                padding: 14px 0;
-            }
-            .item-icon {
-                width: 40px;
-                height: 40px;
+            
+            .header h1 {
                 font-size: 20px;
             }
-            .item-content {
+            
+            .content {
+                padding: 0 15px 15px;
+            }
+            
+            .service-button {
+                padding: 12px;
                 font-size: 15px;
-            }
-            .item-title {
-                font-size: 16px;
-            }
-            .cartoon-avatar {
-                width: 80px;
-                height: 80px;
-                right: 10px;
-                bottom: 60px;
             }
         }
     </style>
 </head>
 <body>
-
-    <!-- 顶部标题 -->
-    <div class="header">
-        <img src="image/28925601_135535194105_3.jpg" alt="联通logo">
-        山东联通用户自助服务
-    </div>
-
-    <!-- 主体内容 -->
     <div class="container">
-        <!-- 常见问题 -->
-        <div class="item">
-            <div class="item-icon icon-question"></div>
-            <div class="item-content">
-                <div class="item-title">常见问题</div>
-                <div class="item-desc">为了提升您的上网体验，您可以点击“常见问题”按钮，了解家庭网络设备安全使用的注意事项，学习常见问题的处理方法，提升家庭网络故障自维能力。</div>
+        <div class="header">
+            <h1>山东联通用户自助服务</h1>
+            <p>便捷服务 · 自主办理</p>
+        </div>
+        
+        <div class="content">
+            <div class="intro">
+                <p>为了提升您的上网体验，您可以<strong>点击"常见问题"按钮</strong>，了解家庭网络设备安全使用的注意事项，学习常见问题的处理方法，提升家庭网络故障自维能力。</p>
+            </div>
+            
+            <div class="service-section">
+                <div class="service-item">
+                    <p class="service-text">
+                        如果您使用的是FTTR光猫，请点击"FTTR诊断"按钮，输入宽带账号，进行故障诊断
+                    </p>
+                    <button class="service-button">FTTR诊断</button>
+                </div>
+                
+                <div class="service-item">
+                    <p class="service-text">
+                        如果您不知道自己家庭的宽带账号或者IPTV账号，请点击"一键扫码"按钮。扫描光猫或机顶盒来获取业务号码。
+                    </p>
+                    <div class="code-example">
+                        如果扫描光猫，请对准MAC码或者SN码；<br>
+                        如果扫描机顶盒，请对准MAC码或者STBID码。
+                    </div>
+                    <button class="service-button">一键扫码</button>
+                </div>
+                
+                <div class="service-item">
+                    <p class="service-text">
+                        如果您不方便对光猫/机顶盒进行扫码，可以输入身份证号码或者固定电话话务码进行业务号码查询
+                    </p>
+                    <button class="service-button">号码查询</button>
+                </div>
             </div>
         </div>
-
-        <!-- FTTR诊断 -->
-        <div class="item">
-            <div class="item-icon icon-network"></div>
-            <div class="item-content">
-                <div class="item-title">FTTR诊断</div>
-                <div class="item-desc">如果您使用的是FTTR光猫，请点击“FTTR诊断”按钮，输入宽带账号，进行故障诊断。</div>
-            </div>
-        </div>
-
-        <!-- 一碰扫码 -->
-        <div class="item">
-            <div class="item-icon icon-scan"></div>
-            <div class="item-content">
-                <div class="item-title">一碰扫码</div>
-                <div class="item-desc">如果您不知道自己家庭的宽带账号或IPTV账号，请点击“一碰扫码”按钮。扫描光猫或机顶盒未获取业务号码。如果扫描光猫，请对准“MAC码或者SN码”；如果扫描机顶盒，请对准“MAC码或者STBID码”。</div>
-            </div>
-        </div>
-
-        <!-- 号码查询 -->
-        <div class="item">
-            <div class="item-icon icon-search"></div>
-            <div class="item-content">
-                <div class="item-title">号码查询</div>
-                <div class="item-desc">如果您不方便对光猫/机顶盒进行扫码，可以输入身份证号码或者固定电话话务号进行业务号码查询，请点击“号码查询”按钮。</div>
-            </div>
+        
+        <div class="footer">
+            <p>© 2025 中国联通山东分公司 版权所有</p>
+            <p>客服热线：<a href="tel:10010">10010</a> | 官方网站：<a href="https://www.chinaunicom.com.cn" target="_blank">www.chinaunicom.com.cn</a></p>
         </div>
     </div>
 
-    <!-- 版权声明 -->
-    <div class="footer">
-        ©2026 中国联通 版权所有
-    </div>
-
-    <!-- 卡通形象 -->
-    <img src="image/0.jpg" alt="通通" class="cartoon-avatar">
-
+    <script>
+        // 按钮点击事件
+        document.querySelectorAll('.service-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const buttonText = this.textContent;
+                let message = '';
+                
+                switch(buttonText) {
+                    case 'FTTR诊断':
+                        message = 'FTTR诊断功能即将打开，请输入您的宽带账号进行故障诊断。';
+                        break;
+                    case '一键扫码':
+                        message = '请使用手机摄像头扫描光猫或机顶盒上的二维码。';
+                        break;
+                    case '号码查询':
+                        message = '请输入您的身份证号码或固定电话话务码进行查询。';
+                        break;
+                }
+                
+                if(message) {
+                    alert(message);
+                }
+            });
+        });
+        
+        // 添加简单的页面加载效果
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.container').style.opacity = '0';
+            document.querySelector('.container').style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                document.querySelector('.container').style.transition = 'opacity 0.5s, transform 0.5s';
+                document.querySelector('.container').style.opacity = '1';
+                document.querySelector('.container').style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
 </body>
 </html>
