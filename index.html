@@ -34,7 +34,7 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            /* 核心修改：所有卡片文字默认左对齐 */
+            /* 所有卡片文字默认左对齐 */
             text-align: left;
         }
         /* 卡片悬浮动效 */
@@ -52,14 +52,16 @@
             height: 6px;
             background: linear-gradient(90deg, #d40010, #e60012, #f02838);
         }
-        /* 品牌卡片样式：仅保留图标+文字垂直居中，取消水平居中 */
+        /* 品牌卡片样式：仅恢复图标+文字水平居中，其他保持左对齐逻辑 */
         .brand-card {
             display: flex;
             align-items: center;
-            /* 移除水平居中：justify-content: center; */
+            /* 核心恢复：让图标+文字整体在品牌卡片中水平居中 */
+            justify-content: center;
             gap: 20px;
             padding: 20px 24px;
-            /* 移除文字居中：text-align: center; */
+            /* 文字自身居中（兜底） */
+            text-align: center;
         }
         .unicom-icon {
             width: 68px;
@@ -227,7 +229,7 @@
             return urlParams.get('userid') || '';
         }
 
-        // 显示客户信息（左对齐排版）
+        // 显示客户信息（左对齐排版，品牌卡片居中）
         function showUserInfo() {
             const container = document.getElementById('container');
             const userId = getUserId();
@@ -236,13 +238,13 @@
             if (user) {
                 container.innerHTML = `
                     <div class="card-container">
-                        <!-- 品牌卡片：联通标志+联通服务 -->
+                        <!-- 品牌卡片：联通标志+联通服务（居中） -->
                         <div class="card brand-card">
                             <img src="${UNICOM_ICON_URL}" alt="联通图标" class="unicom-icon">
                             <div class="brand-text">联通客户服务</div>
                         </div>
                         
-                        <!-- 客户基础信息卡片 -->
+                        <!-- 客户基础信息卡片（左对齐） -->
                         <div class="card info-card">
                             <div class="info-card__title">客户业务信息</div>
                             尊敬的${user.user_name}先生/女士，感谢您使用联通${user.prod_name}业务<br>
@@ -250,7 +252,7 @@
                             当前业务状态：<span class="unicom-red">${user.status}</span>
                         </div>
 
-                        <!-- 网络信息卡片 -->
+                        <!-- 网络信息卡片（左对齐） -->
                         <div class="card info-card">
                             <div class="info-card__title">网络配置信息</div>
                             A端配置：${user.a_part}<br>
@@ -258,7 +260,7 @@
                             分配IP地址：${user.ip}
                         </div>
                         
-                        <!-- 联系人信息卡片 -->
+                        <!-- 联系人信息卡片（左对齐） -->
                         <div class="card info-card">
                             <div class="info-card__title">专属服务人员</div>
                             客户经理：${user.khjl_name}   联系方式：<span class="unicom-red">${user.khjl_phone}</span><br>
