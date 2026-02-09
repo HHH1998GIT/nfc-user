@@ -3,135 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>联通专线客户服务信息</title>
+    <title>SOI-EOI 包裹式信息展示界面</title>
     <style>
         * {margin: 0; padding: 0; box-sizing: border-box;}
         body {
             font-family: "微软雅黑", Arial, "Microsoft YaHei UI";
             background: linear-gradient(135deg, #f0f4f8 0%, #e9edf2 100%);
             min-height: 100vh;
-            padding: 0px 40px;
+            padding: 0 40px;
             position: relative;
             overflow-x: hidden;
         }
-        /* 容器：增加圆角和轻微阴影，提升质感 */
-        .card-container {
+        /* 主容器：承载SOI/EOI和核心内容 */
+        .soi-eoi-container {
             max-width: 550px;
             width: 100%;
             margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            padding: 10px 10px 0;
+            padding: 10px 0;
         }
-        /* 通用卡片样式：优化阴影和圆角 */
-        .card {
+        /* SOI/EOI标识样式 */
+        .soi-tag, .eoi-tag {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e60012;
+            margin: 5px 0;
+            letter-spacing: 1px;
+        }
+        /* 核心内容容器：保留卡片质感 */
+        .content-card {
             background: #ffffff;
             border: 2px solid #e60012;
             box-shadow: 0 8px 24px rgba(230, 0, 18, 0.08);
             border-radius: 20px;
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            /* 所有卡片文字默认左对齐 */
-            text-align: left;
+            padding: 20px 24px;
+            margin: 5px 0;
         }
-        /* 卡片悬浮动效 */
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(230, 0, 18, 0.12);
-        }
-        /* 卡片顶部装饰条：优化渐变 */
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, #d40010, #e60012, #f02838);
-        }
-        /* 品牌卡片样式：仅恢复图标+文字水平居中，其他保持左对齐逻辑 */
-        .brand-card {
+        /* 品牌头部 */
+        .brand-header {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 20px;
-            padding: 20px 24px;
-            text-align: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f5f5f5;
         }
         .unicom-icon {
-            width: 68px;
+            width: 60px;
             height: auto;
-            transition: transform 0.3s ease;
-        }
-        .brand-card:hover .unicom-icon {
-            transform: rotate(5deg);
         }
         .brand-text {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
             color: #e60012;
             background: linear-gradient(120deg, #d40010, #e60012);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: 1px;
         }
-        /* 信息卡片样式：核心修改 - 更紧凑的内边距和行高 */
-        .info-card {
-            line-height: 1.8; /* 从2.2改为1.8，文字行间距更紧凑 */
+        /* 信息列表：紧凑排版 */
+        .info-list {
+            line-height: 1.8;
             font-size: 19px;
             color: #2d3748;
-            padding: 18px 24px; /* 从28px 24px改为18px 24px，减少卡片上下内边距 */
-            text-align: left;
         }
-        /* 信息卡片标题：核心修改 - 缩小标题间距 */
-        .info-card__title {
+        .info-item {
+            margin-bottom: 8px;
+        }
+        /* 高亮文字 */
+        .highlight {
+            color: #e60012;
+            font-weight: 600;
+        }
+        /* 信息分组标题 */
+        .info-group-title {
             font-size: 20px;
             font-weight: 600;
             color: #e60012;
-            margin-bottom: 8px; /* 从12px改为8px，标题与内容间距缩小 */
-            padding-bottom: 6px; /* 从8px改为6px，标题下划线间距缩小 */
+            margin: 12px 0 8px 0;
+            padding-bottom: 4px;
             border-bottom: 1px solid #f5f5f5;
         }
-        /* 联通红色高亮文字：优化样式 */
-        .unicom-red {
-            color: #e60012;
-            font-weight: 600;
-            font-size: 20px;
-            text-shadow: 0 1px 2px rgba(230, 0, 18, 0.1);
+        /* 辅助提示文字 */
+        .helper-text {
+            font-size: 18px;
+            color: #4a5568;
+            margin-top: 8px;
         }
-        /* 右下角卡通形象：优化交互和样式 */
-        .cartoon-avatar {
-            position: fixed;
-            right: 20px;
-            bottom: 80px;
-            width: 128px;
-            height: auto;
-            z-index: 999;
-            border: 4px solid #ffffff;
-            outline: 2px solid #e60012;
-            border-radius: 50%;
-            box-shadow: 0 8px 20px rgba(230, 0, 18, 0.15);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .cartoon-avatar:hover {
-            transform: scale(1.08) translateY(-4px);
-            box-shadow: 0 12px 28px rgba(230, 0, 18, 0.25);
-        }
-        /* 加载/错误提示：优化样式 */
-        .loading, .error {
-            text-align: center;
-            font-size: 22px;
-            color: #e60012;
-            margin-top: 20px;
-            font-weight: 500;
-            line-height: 1.5;
-        }
-        /* 版权声明：优化样式 */
+        /* 版权声明 */
         .copyright {
             max-width: 550px;
             width: 100%;
@@ -144,143 +103,116 @@
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        /* 辅助文本样式：核心修改 - 缩小辅助文字间距 */
-        .helper-text {
-            font-size: 18px;
-            color: #4a5568;
-            margin-top: 4px; /* 从8px改为4px，辅助文字间距缩小 */
-        }
-        /* 手机端适配：同步调整紧凑度 */
+        /* 手机端适配 */
         @media (max-width: 480px) {
             body {
-                padding: 0px 20px;
+                padding: 0 20px;
             }
-            .card-container {
-                gap: 16px;
-                padding: 5px 5px 0;
+            .soi-tag, .eoi-tag {
+                font-size: 16px;
             }
-            .brand-card {
-                padding: 15px 20px;
+            .content-card {
+                padding: 15px 18px;
+            }
+            .brand-header {
                 gap: 15px;
+                margin-bottom: 12px;
             }
             .unicom-icon {
-                width: 58px;
+                width: 50px;
             }
             .brand-text {
-                font-size: 22px;
-                letter-spacing: 0;
-            }
-            /* 手机端信息卡片：同步更紧凑 */
-            .info-card {
-                padding: 15px 18px; /* 从20px 18px改为15px 18px */
-                font-size: 17px;
-                line-height: 1.7; /* 从2.0改为1.7 */
-            }
-            .info-card__title {
-                font-size: 18px;
-                margin-bottom: 6px; /* 手机端标题间距更小 */
-                padding-bottom: 4px;
-            }
-            .unicom-red {
-                font-size: 18px;
-            }
-            .cartoon-avatar {
-                width: 100px;
-                right: 10px;
-                bottom: 70px;
-            }
-            .loading, .error {
                 font-size: 20px;
-                margin-top: 15px;
             }
-            .copyright {
-                font-size: 14px;
-                padding: 12px;
-                margin-bottom: 20px;
+            .info-list {
+                font-size: 17px;
+                line-height: 1.7;
+            }
+            .info-group-title {
+                font-size: 18px;
+                margin: 10px 0 6px 0;
             }
             .helper-text {
                 font-size: 17px;
-                margin-top: 3px; /* 手机端辅助文字间距极致紧凑 */
             }
         }
     </style>
 </head>
 <body>
-    <div id="container" class="loading">加载中</div>
+    <div class="soi-eoi-container">
+        <!-- SOI标识 -->
+        <div class="soi-tag">[SOI]</div>
+        
+        <!-- 核心内容卡片 -->
+        <div class="content-card">
+            <!-- 品牌头部 -->
+            <div class="brand-header">
+                <img src="image/28925601_135535194105_3.jpg" alt="联通图标" class="unicom-icon">
+                <div class="brand-text">联通客户服务</div>
+            </div>
+
+            <!-- 信息内容 -->
+            <div class="info-list">
+                <div class="info-group-title">客户业务</div>
+                <div class="info-item">尊敬的王先生/女士，感谢您使用联通固话业务</div>
+                <div class="info-item">您的业务号码：<span class="highlight">69657134</span></div>
+                <div class="info-item">当前业务状态：<span class="highlight">正常</span></div>
+
+                <div class="info-group-title">网络配置信息</div>
+                <div class="info-item">A端配置：axxx</div>
+                <div class="info-item">Z端配置：zxxx</div>
+                <div class="info-item">分配IP地址：134.33.0.1</div>
+
+                <div class="info-group-title">专属服务人员</div>
+                <div class="info-item">客户经理：张三   联系方式：<span class="highlight">15615310001</span></div>
+                <div class="info-item">智企工程师：刘希壮   联系方式：<span class="highlight">67604888</span></div>
+                
+                <div class="helper-text">有问题可联系专属服务人员哦～</div>
+            </div>
+        </div>
+        
+        <!-- EOI标识 -->
+        <div class="eoi-tag">[EOI]</div>
+    </div>
+
+    <!-- 版权声明 -->
+    <div class="copyright">©2026 中国联通 版权所有</div>
 
     <script>
-        // ========== 【只改这里！】配置区 ==========
+        // 可选：如果需要动态加载用户信息，可保留以下逻辑
         const userList = {
-            "001": {num: "69657134",status:"正常",user_name: "王",  zhijia_name: "刘希壮", zhijia_phone: "67604888", prod_name: "固话", khjl_name: "张三", khjl_phone: "15615310001", a_part:"axxx", z_part:"zxxx", ip:"134.33.0.1"},
-            "002": {num: "87207037",status:"欠费",user_name: "李",  zhijia_name: "刘希壮", zhijia_phone: "67604888",prod_name: "宽带", khjl_name: "李四", khjl_phone: "15615310002", a_part:"axxx", z_part:"zxxx", ip:"134.33.0.2"},
-            // 新增用户：直接按格式添加
-            // "003": {num: "12345678",status:"正常",user_name: "张",  zhijia_name: "张三", phone: "13800138000", prod_name: "PON+HGU"},
+            "001": {num: "69657134",status:"正常",user_name: "王", prod_name: "固话", khjl_name: "张三", khjl_phone: "15615310001", a_part:"axxx", z_part:"zxxx", ip:"134.33.0.1", zhijia_name: "刘希壮", zhijia_phone: "67604888"},
+            "002": {num: "87207037",status:"欠费",user_name: "李", prod_name: "宽带", khjl_name: "李四", khjl_phone: "15615310002", a_part:"axxx", z_part:"zxxx", ip:"134.33.0.2", zhijia_name: "刘希壮", zhijia_phone: "67604888"}
         };
-        // 卡通形象地址（支持本地/GitHub在线地址）
-        const CARTOON_IMG_URL = "image/0.jpg";
-        // 联通图标地址（你提供的路径：image/28925601_135535194105_3.jpg）
-        const UNICOM_ICON_URL = "image/28925601_135535194105_3.jpg";
-        // 卡通图大小（px）
-        const CARTOON_SIZE = 128;
-        // ========== 改完上面就行，下面无需修改 ==========
 
-        // 读取URL参数userid
-        function getUserId() {
+        // 读取URL参数加载对应用户信息（可选功能）
+        function loadUserInfo() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('userid') || '';
-        }
-
-        // 显示客户信息（左对齐排版，品牌卡片居中）
-        function showUserInfo() {
-            const container = document.getElementById('container');
-            const userId = getUserId();
-            const user = userList[userId];
+            const userId = urlParams.get('userid') || '001';
+            const user = userList[userId] || userList['001'];
             
-            if (user) {
-                container.innerHTML = `
-                    <div class="card-container">
-                        <!-- 品牌卡片：联通标志+联通服务（居中） -->
-                        <div class="card brand-card">
-                            <img src="${UNICOM_ICON_URL}" alt="联通图标" class="unicom-icon">
-                            <div class="brand-text">联通客户服务</div>
-                        </div>
-                        
-                        <!-- 客户基础信息卡片（左对齐） -->
-                        <div class="card info-card">
-                            <div class="info-card__title">客户业务</div>
-                            尊敬的${user.user_name}先生/女士，感谢您使用联通${user.prod_name}业务<br>
-                            您的业务号码：${user.num}<br>
-                            当前业务状态：<span class="unicom-red">${user.status}</span>
-                        </div>
+            const infoList = document.querySelector('.info-list');
+            infoList.innerHTML = `
+                <div class="info-group-title">客户业务</div>
+                <div class="info-item">尊敬的${user.user_name}先生/女士，感谢您使用联通${user.prod_name}业务</div>
+                <div class="info-item">您的业务号码：<span class="highlight">${user.num}</span></div>
+                <div class="info-item">当前业务状态：<span class="highlight">${user.status}</span></div>
 
-                        <!-- 网络信息卡片（左对齐） -->
-                        <div class="card info-card">
-                            <div class="info-card__title">网络配置信息</div>
-                            A端配置：${user.a_part}<br>
-                            Z端配置：${user.z_part}<br>
-                            分配IP地址：${user.ip}
-                        </div>
-                        
-                        <!-- 联系人信息卡片（左对齐） -->
-                        <div class="card info-card">
-                            <div class="info-card__title">专属服务人员</div>
-                            客户经理：${user.khjl_name}   联系方式：<span class="unicom-red">${user.khjl_phone}</span><br>
-                            智企工程师：${user.zhijia_name}   联系方式：<span class="unicom-red">${user.zhijia_phone}</span><br>
-                            <span class="helper-text">有问题可以点击右下角的通通哦～</span>
-                        </div>
-                        
-                        <!-- 版权声明 -->
-                        <div class="copyright">©2026 中国联通 版权所有</div>
-                    </div>
-                    <img src="${CARTOON_IMG_URL}" alt="通通形象" class="cartoon-avatar" style="width:${CARTOON_SIZE}px;">
-                `;
-            } else {
-                container.innerHTML = '<div class="error">未找到该专线客户信息<br>请检查URL中的userid参数是否正确</div>';
-            }
+                <div class="info-group-title">网络配置信息</div>
+                <div class="info-item">A端配置：${user.a_part}</div>
+                <div class="info-item">Z端配置：${user.z_part}</div>
+                <div class="info-item">分配IP地址：${user.ip}</div>
+
+                <div class="info-group-title">专属服务人员</div>
+                <div class="info-item">客户经理：${user.khjl_name}   联系方式：<span class="highlight">${user.khjl_phone}</span></div>
+                <div class="info-item">智企工程师：${user.zhijia_name}   联系方式：<span class="highlight">${user.zhijia_phone}</span></div>
+                
+                <div class="helper-text">有问题可联系专属服务人员哦～</div>
+            `;
         }
 
-        // 页面加载显示信息
-        showUserInfo();
+        // 页面加载时执行（如需动态加载则取消注释）
+        // loadUserInfo();
     </script>
 </body>
 </html>
