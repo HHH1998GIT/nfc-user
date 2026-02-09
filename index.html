@@ -8,7 +8,6 @@
         * {margin: 0; padding: 0; box-sizing: border-box;}
         body {
             font-family: "微软雅黑", Arial, "Microsoft YaHei UI";
-            /* 更柔和的渐变背景，增加层次感 */
             background: linear-gradient(135deg, #f0f4f8 0%, #e9edf2 100%);
             min-height: 100vh;
             padding: 40px 20px;
@@ -29,14 +28,14 @@
         .card {
             background: #ffffff;
             border: 2px solid #e60012;
-            /* 更细腻的阴影，增加立体感 */
             box-shadow: 0 8px 24px rgba(230, 0, 18, 0.08);
             border-radius: 20px;
             padding: 24px;
             position: relative;
             overflow: hidden;
-            /* 轻微的悬浮效果 */
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            /* 核心修改：所有卡片文字默认左对齐 */
+            text-align: left;
         }
         /* 卡片悬浮动效 */
         .card:hover {
@@ -53,19 +52,18 @@
             height: 6px;
             background: linear-gradient(90deg, #d40010, #e60012, #f02838);
         }
-        /* 品牌卡片样式：优化间距和比例 */
+        /* 品牌卡片样式：仅保留图标+文字垂直居中，取消水平居中 */
         .brand-card {
             display: flex;
             align-items: center;
-            justify-content: center;
+            /* 移除水平居中：justify-content: center; */
             gap: 20px;
             padding: 20px 24px;
-            text-align: left;
+            /* 移除文字居中：text-align: center; */
         }
         .unicom-icon {
             width: 68px;
             height: auto;
-            /* 轻微的旋转动效，增加活力 */
             transition: transform 0.3s ease;
         }
         .brand-card:hover .unicom-icon {
@@ -75,7 +73,6 @@
             font-size: 26px;
             font-weight: 700;
             color: #e60012;
-            /* 文字渐变效果 */
             background: linear-gradient(120deg, #d40010, #e60012);
             -webkit-background-clip: text;
             background-clip: text;
@@ -87,8 +84,9 @@
             line-height: 2.2;
             font-size: 19px;
             color: #2d3748;
-            /* 增加内边距，提升呼吸感 */
             padding: 28px 24px;
+            /* 明确指定左对齐 */
+            text-align: left;
         }
         /* 信息卡片标题（新增） */
         .info-card__title {
@@ -104,7 +102,6 @@
             color: #e60012;
             font-weight: 600;
             font-size: 20px;
-            /* 增加轻微的文字阴影 */
             text-shadow: 0 1px 2px rgba(230, 0, 18, 0.1);
         }
         /* 右下角卡通形象：优化交互和样式 */
@@ -120,7 +117,6 @@
             border-radius: 50%;
             box-shadow: 0 8px 20px rgba(230, 0, 18, 0.15);
             transition: all 0.3s ease;
-            /* 增加鼠标指针样式 */
             cursor: pointer;
         }
         .cartoon-avatar:hover {
@@ -231,7 +227,7 @@
             return urlParams.get('userid') || '';
         }
 
-        // 显示客户信息（优化排版）
+        // 显示客户信息（左对齐排版）
         function showUserInfo() {
             const container = document.getElementById('container');
             const userId = getUserId();
@@ -265,8 +261,8 @@
                         <!-- 联系人信息卡片 -->
                         <div class="card info-card">
                             <div class="info-card__title">专属服务人员</div>
-                            客户经理：${user.khjl_name} &nbsp; 联系方式：<span class="unicom-red">${user.khjl_phone}</span><br>
-                            智企工程师：${user.zhijia_name} &nbsp; 联系方式：<span class="unicom-red">${user.zhijia_phone}</span><br>
+                            客户经理：${user.khjl_name}   联系方式：<span class="unicom-red">${user.khjl_phone}</span><br>
+                            智企工程师：${user.zhijia_name}   联系方式：<span class="unicom-red">${user.zhijia_phone}</span><br>
                             <span class="helper-text">有问题可以点击右下角的通通哦～</span>
                         </div>
                         
