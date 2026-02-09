@@ -3,216 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOI-EOI 包裹式信息展示界面</title>
+    <title>山东联通用户自助服务</title>
     <style>
-        * {margin: 0; padding: 0; box-sizing: border-box;}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: "微软雅黑", Arial, "Microsoft YaHei UI";
-            background: linear-gradient(135deg, #f0f4f8 0%, #e9edf2 100%);
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 0 20px;
             min-height: 100vh;
-            padding: 0 40px;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            background-color: #e60012;
+            color: white;
+            text-align: center;
+            padding: 16px 20px;
+            border-radius: 12px 12px 0 0;
+            font-size: 24px;
+            font-weight: bold;
             position: relative;
-            overflow-x: hidden;
+            margin-bottom: 20px;
         }
-        /* 主容器：承载SOI/EOI和核心内容 */
-        .soi-eoi-container {
+
+        .header img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        /* 主容器 */
+        .container {
             max-width: 550px;
-            width: 100%;
             margin: 0 auto;
-            padding: 10px 0;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            padding: 20px;
         }
-        /* SOI/EOI标识样式 */
-        .soi-tag, .eoi-tag {
-            font-size: 18px;
-            font-weight: 700;
-            color: #e60012;
-            margin: 5px 0;
-            letter-spacing: 1px;
+
+        /* 每个功能项 */
+        .item {
+            display: flex;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s ease;
         }
-        /* 核心内容容器：保留卡片质感 */
-        .content-card {
-            background: #ffffff;
-            border: 2px solid #e60012;
-            box-shadow: 0 8px 24px rgba(230, 0, 18, 0.08);
-            border-radius: 20px;
-            padding: 20px 24px;
-            margin: 5px 0;
+
+        .item:last-child {
+            border-bottom: none;
         }
-        /* 品牌头部 */
-        .brand-header {
+
+        .item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .item-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 16px;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #f5f5f5;
-        }
-        .unicom-icon {
-            width: 60px;
-            height: auto;
-        }
-        .brand-text {
+            background-color: #e60012;
+            color: white;
+            border-radius: 8px;
             font-size: 24px;
-            font-weight: 700;
-            color: #e60012;
-            background: linear-gradient(120deg, #d40010, #e60012);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
         }
-        /* 信息列表：紧凑排版 */
-        .info-list {
-            line-height: 1.8;
-            font-size: 19px;
-            color: #2d3748;
-        }
-        .info-item {
-            margin-bottom: 8px;
-        }
-        /* 高亮文字 */
-        .highlight {
-            color: #e60012;
-            font-weight: 600;
-        }
-        /* 信息分组标题 */
-        .info-group-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #e60012;
-            margin: 12px 0 8px 0;
-            padding-bottom: 4px;
-            border-bottom: 1px solid #f5f5f5;
-        }
-        /* 辅助提示文字 */
-        .helper-text {
-            font-size: 18px;
+
+        .item-content {
+            flex: 1;
+            font-size: 17px;
             color: #4a5568;
-            margin-top: 8px;
         }
-        /* 版权声明 */
-        .copyright {
-            max-width: 550px;
-            width: 100%;
-            margin: 10px auto 30px;
+
+        .item-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e60012;
+            margin-bottom: 6px;
+        }
+
+        .item-desc {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* 图标字体使用Unicode */
+        .icon-question::before { content: "❓"; }
+        .icon-network::before { content: "🌐"; }
+        .icon-scan::before { content: "🔍"; }
+        .icon-search::before { content: "🔍"; }
+
+        /* 底部版权 */
+        .footer {
+            margin-top: 20px;
             text-align: center;
-            font-size: 15px;
-            color: #718096;
-            padding: 16px;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            color: #888;
+            padding: 12px;
+            background-color: #f5f7fa;
+            border-radius: 12px;
+            margin-bottom: 20px;
         }
-        /* 手机端适配 */
+
+        /* 卡通形象 */
+        .cartoon-avatar {
+            position: fixed;
+            right: 20px;
+            bottom: 80px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid white;
+            outline: 2px solid #e60012;
+            box-shadow: 0 8px 20px rgba(230, 0, 18, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cartoon-avatar:hover {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 12px 28px rgba(230, 0, 18, 0.25);
+        }
+
+        /* 响应式 */
         @media (max-width: 480px) {
-            body {
-                padding: 0 20px;
+            .header {
+                font-size: 20px;
+                padding: 12px 16px;
             }
-            .soi-tag, .eoi-tag {
-                font-size: 16px;
+            .item {
+                padding: 14px 0;
             }
-            .content-card {
-                padding: 15px 18px;
-            }
-            .brand-header {
-                gap: 15px;
-                margin-bottom: 12px;
-            }
-            .unicom-icon {
-                width: 50px;
-            }
-            .brand-text {
+            .item-icon {
+                width: 40px;
+                height: 40px;
                 font-size: 20px;
             }
-            .info-list {
-                font-size: 17px;
-                line-height: 1.7;
+            .item-content {
+                font-size: 15px;
             }
-            .info-group-title {
-                font-size: 18px;
-                margin: 10px 0 6px 0;
+            .item-title {
+                font-size: 16px;
             }
-            .helper-text {
-                font-size: 17px;
+            .cartoon-avatar {
+                width: 80px;
+                height: 80px;
+                right: 10px;
+                bottom: 60px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="soi-eoi-container">
-        <!-- SOI标识 -->
-        <div class="soi-tag">[SOI]</div>
-        
-        <!-- 核心内容卡片 -->
-        <div class="content-card">
-            <!-- 品牌头部 -->
-            <div class="brand-header">
-                <img src="image/28925601_135535194105_3.jpg" alt="联通图标" class="unicom-icon">
-                <div class="brand-text">联通客户服务</div>
-            </div>
 
-            <!-- 信息内容 -->
-            <div class="info-list">
-                <div class="info-group-title">客户业务</div>
-                <div class="info-item">尊敬的王先生/女士，感谢您使用联通固话业务</div>
-                <div class="info-item">您的业务号码：<span class="highlight">69657134</span></div>
-                <div class="info-item">当前业务状态：<span class="highlight">正常</span></div>
+    <!-- 顶部标题 -->
+    <div class="header">
+        <img src="image/28925601_135535194105_3.jpg" alt="联通logo">
+        山东联通用户自助服务
+    </div>
 
-                <div class="info-group-title">网络配置信息</div>
-                <div class="info-item">A端配置：axxx</div>
-                <div class="info-item">Z端配置：zxxx</div>
-                <div class="info-item">分配IP地址：134.33.0.1</div>
-
-                <div class="info-group-title">专属服务人员</div>
-                <div class="info-item">客户经理：张三   联系方式：<span class="highlight">15615310001</span></div>
-                <div class="info-item">智企工程师：刘希壮   联系方式：<span class="highlight">67604888</span></div>
-                
-                <div class="helper-text">有问题可联系专属服务人员哦～</div>
+    <!-- 主体内容 -->
+    <div class="container">
+        <!-- 常见问题 -->
+        <div class="item">
+            <div class="item-icon icon-question"></div>
+            <div class="item-content">
+                <div class="item-title">常见问题</div>
+                <div class="item-desc">为了提升您的上网体验，您可以点击“常见问题”按钮，了解家庭网络设备安全使用的注意事项，学习常见问题的处理方法，提升家庭网络故障自维能力。</div>
             </div>
         </div>
-        
-        <!-- EOI标识 -->
-        <div class="eoi-tag">[EOI]</div>
+
+        <!-- FTTR诊断 -->
+        <div class="item">
+            <div class="item-icon icon-network"></div>
+            <div class="item-content">
+                <div class="item-title">FTTR诊断</div>
+                <div class="item-desc">如果您使用的是FTTR光猫，请点击“FTTR诊断”按钮，输入宽带账号，进行故障诊断。</div>
+            </div>
+        </div>
+
+        <!-- 一碰扫码 -->
+        <div class="item">
+            <div class="item-icon icon-scan"></div>
+            <div class="item-content">
+                <div class="item-title">一碰扫码</div>
+                <div class="item-desc">如果您不知道自己家庭的宽带账号或IPTV账号，请点击“一碰扫码”按钮。扫描光猫或机顶盒未获取业务号码。如果扫描光猫，请对准“MAC码或者SN码”；如果扫描机顶盒，请对准“MAC码或者STBID码”。</div>
+            </div>
+        </div>
+
+        <!-- 号码查询 -->
+        <div class="item">
+            <div class="item-icon icon-search"></div>
+            <div class="item-content">
+                <div class="item-title">号码查询</div>
+                <div class="item-desc">如果您不方便对光猫/机顶盒进行扫码，可以输入身份证号码或者固定电话话务号进行业务号码查询，请点击“号码查询”按钮。</div>
+            </div>
+        </div>
     </div>
 
     <!-- 版权声明 -->
-    <div class="copyright">©2026 中国联通 版权所有</div>
+    <div class="footer">
+        ©2026 中国联通 版权所有
+    </div>
 
-    <script>
-        // 可选：如果需要动态加载用户信息，可保留以下逻辑
-        const userList = {
-            "001": {num: "69657134",status:"正常",user_name: "王", prod_name: "固话", khjl_name: "张三", khjl_phone: "15615310001", a_part:"axxx", z_part:"zxxx", ip:"134.33.0.1", zhijia_name: "刘希壮", zhijia_phone: "67604888"},
-            "002": {num: "87207037",status:"欠费",user_name: "李", prod_name: "宽带", khjl_name: "李四", khjl_phone: "15615310002", a_part:"axxx", z_part:"zxxx", ip:"134.33.0.2", zhijia_name: "刘希壮", zhijia_phone: "67604888"}
-        };
+    <!-- 卡通形象 -->
+    <img src="image/0.jpg" alt="通通" class="cartoon-avatar">
 
-        // 读取URL参数加载对应用户信息（可选功能）
-        function loadUserInfo() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const userId = urlParams.get('userid') || '001';
-            const user = userList[userId] || userList['001'];
-            
-            const infoList = document.querySelector('.info-list');
-            infoList.innerHTML = `
-                <div class="info-group-title">客户业务</div>
-                <div class="info-item">尊敬的${user.user_name}先生/女士，感谢您使用联通${user.prod_name}业务</div>
-                <div class="info-item">您的业务号码：<span class="highlight">${user.num}</span></div>
-                <div class="info-item">当前业务状态：<span class="highlight">${user.status}</span></div>
-
-                <div class="info-group-title">网络配置信息</div>
-                <div class="info-item">A端配置：${user.a_part}</div>
-                <div class="info-item">Z端配置：${user.z_part}</div>
-                <div class="info-item">分配IP地址：${user.ip}</div>
-
-                <div class="info-group-title">专属服务人员</div>
-                <div class="info-item">客户经理：${user.khjl_name}   联系方式：<span class="highlight">${user.khjl_phone}</span></div>
-                <div class="info-item">智企工程师：${user.zhijia_name}   联系方式：<span class="highlight">${user.zhijia_phone}</span></div>
-                
-                <div class="helper-text">有问题可联系专属服务人员哦～</div>
-            `;
-        }
-
-        // 页面加载时执行（如需动态加载则取消注释）
-        // loadUserInfo();
-    </script>
 </body>
 </html>
