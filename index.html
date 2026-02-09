@@ -10,7 +10,6 @@
             font-family: "微软雅黑", Arial, "Microsoft YaHei UI";
             background: linear-gradient(135deg, #f0f4f8 0%, #e9edf2 100%);
             min-height: 100vh;
-            /* 核心修改1：顶部留白设为0，左右保留40px保证内容不贴边 */
             padding: 0px 40px;
             position: relative;
             overflow-x: hidden;
@@ -19,11 +18,11 @@
         .card-container {
             max-width: 550px;
             width: 100%;
-            margin: 0 auto; /* 核心修改2：取消margin-top，仅保留水平居中 */
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             gap: 24px;
-            padding: 10px 10px 0; /* 核心修改3：容器顶部内边距设为0，仅保留左右10px */
+            padding: 10px 10px 0;
         }
         /* 通用卡片样式：优化阴影和圆角 */
         .card {
@@ -57,11 +56,9 @@
         .brand-card {
             display: flex;
             align-items: center;
-            /* 核心恢复：让图标+文字整体在品牌卡片中水平居中 */
             justify-content: center;
             gap: 20px;
             padding: 20px 24px;
-            /* 文字自身居中（兜底） */
             text-align: center;
         }
         .unicom-icon {
@@ -82,22 +79,21 @@
             color: transparent;
             letter-spacing: 1px;
         }
-        /* 信息卡片样式：优化排版和间距 */
+        /* 信息卡片样式：核心修改 - 更紧凑的内边距和行高 */
         .info-card {
-            line-height: 2.2;
+            line-height: 1.8; /* 从2.2改为1.8，文字行间距更紧凑 */
             font-size: 19px;
             color: #2d3748;
-            padding: 28px 24px;
-            /* 明确指定左对齐 */
+            padding: 18px 24px; /* 从28px 24px改为18px 24px，减少卡片上下内边距 */
             text-align: left;
         }
-        /* 信息卡片标题（新增） */
+        /* 信息卡片标题：核心修改 - 缩小标题间距 */
         .info-card__title {
             font-size: 20px;
             font-weight: 600;
             color: #e60012;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
+            margin-bottom: 8px; /* 从12px改为8px，标题与内容间距缩小 */
+            padding-bottom: 6px; /* 从8px改为6px，标题下划线间距缩小 */
             border-bottom: 1px solid #f5f5f5;
         }
         /* 联通红色高亮文字：优化样式 */
@@ -131,7 +127,7 @@
             text-align: center;
             font-size: 22px;
             color: #e60012;
-            margin-top: 20px; /* 核心修改4：加载/错误提示的顶部间距从80px改为20px */
+            margin-top: 20px;
             font-weight: 500;
             line-height: 1.5;
         }
@@ -148,21 +144,20 @@
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        /* 辅助文本样式（新增） */
+        /* 辅助文本样式：核心修改 - 缩小辅助文字间距 */
         .helper-text {
             font-size: 18px;
             color: #4a5568;
-            margin-top: 8px;
+            margin-top: 4px; /* 从8px改为4px，辅助文字间距缩小 */
         }
-        /* 手机端适配：精细化调整 */
+        /* 手机端适配：同步调整紧凑度 */
         @media (max-width: 480px) {
             body {
-                /* 核心修改5：手机端顶部留白也设为0，左右20px */
                 padding: 0px 20px;
             }
             .card-container {
                 gap: 16px;
-                padding: 5px 5px 0; /* 手机端容器顶部内边距0 */
+                padding: 5px 5px 0;
             }
             .brand-card {
                 padding: 15px 20px;
@@ -175,13 +170,16 @@
                 font-size: 22px;
                 letter-spacing: 0;
             }
+            /* 手机端信息卡片：同步更紧凑 */
             .info-card {
-                padding: 20px 18px;
+                padding: 15px 18px; /* 从20px 18px改为15px 18px */
                 font-size: 17px;
-                line-height: 2.0;
+                line-height: 1.7; /* 从2.0改为1.7 */
             }
             .info-card__title {
                 font-size: 18px;
+                margin-bottom: 6px; /* 手机端标题间距更小 */
+                padding-bottom: 4px;
             }
             .unicom-red {
                 font-size: 18px;
@@ -193,7 +191,7 @@
             }
             .loading, .error {
                 font-size: 20px;
-                margin-top: 15px; /* 手机端加载提示顶部间距15px */
+                margin-top: 15px;
             }
             .copyright {
                 font-size: 14px;
@@ -202,6 +200,7 @@
             }
             .helper-text {
                 font-size: 17px;
+                margin-top: 3px; /* 手机端辅助文字间距极致紧凑 */
             }
         }
     </style>
