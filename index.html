@@ -10,7 +10,8 @@
             font-family: "微软雅黑", Arial, "Microsoft YaHei UI";
             background: linear-gradient(135deg, #f0f4f8 0%, #e9edf2 100%);
             min-height: 100vh;
-            padding: 1px 40px;
+            /* 核心修改1：顶部留白设为0，左右保留40px保证内容不贴边 */
+            padding: 0px 40px;
             position: relative;
             overflow-x: hidden;
         }
@@ -18,11 +19,11 @@
         .card-container {
             max-width: 550px;
             width: 100%;
-            margin: 0 auto;
+            margin: 0 auto; /* 核心修改2：取消margin-top，仅保留水平居中 */
             display: flex;
             flex-direction: column;
             gap: 24px;
-            padding: 10px;
+            padding: 10px 10px 0; /* 核心修改3：容器顶部内边距设为0，仅保留左右10px */
         }
         /* 通用卡片样式：优化阴影和圆角 */
         .card {
@@ -130,7 +131,7 @@
             text-align: center;
             font-size: 22px;
             color: #e60012;
-            margin-top: 80px;
+            margin-top: 20px; /* 核心修改4：加载/错误提示的顶部间距从80px改为20px */
             font-weight: 500;
             line-height: 1.5;
         }
@@ -156,14 +157,12 @@
         /* 手机端适配：精细化调整 */
         @media (max-width: 480px) {
             body {
-                padding-top: 1px;    /* 顶部留白（重点修改这个值） */
-                padding-right: 20px;  /* 右侧留白 */
-                padding-bottom: 20px; /* 底部留白 */
-                padding-left: 20px
+                /* 核心修改5：手机端顶部留白也设为0，左右20px */
+                padding: 0px 20px;
             }
             .card-container {
                 gap: 16px;
-                padding: 5px;
+                padding: 5px 5px 0; /* 手机端容器顶部内边距0 */
             }
             .brand-card {
                 padding: 15px 20px;
@@ -194,7 +193,7 @@
             }
             .loading, .error {
                 font-size: 20px;
-                margin-top: 60px;
+                margin-top: 15px; /* 手机端加载提示顶部间距15px */
             }
             .copyright {
                 font-size: 14px;
