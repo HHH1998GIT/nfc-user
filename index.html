@@ -17,6 +17,8 @@
             min-height: 100vh;
             padding: 20px;
             color: #333;
+            position: relative;
+            overflow-x: hidden;
         }
         
         .container {
@@ -26,6 +28,8 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
         }
         
         .header {
@@ -180,6 +184,27 @@
             color: #666;
         }
         
+        /* 右下角卡通形象：保持原有样式 */
+        .cartoon-avatar {
+            position: fixed;
+            right: 20px;
+            bottom: 80px;
+            width: 128px;
+            height: auto;
+            z-index: 999;
+            border: 4px solid #ffffff;
+            outline: 2px solid #e60012;
+            border-radius: 50%;
+            box-shadow: 0 8px 20px rgba(230, 0, 18, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .cartoon-avatar:hover {
+            transform: scale(1.08) translateY(-4px);
+            box-shadow: 0 12px 28px rgba(230, 0, 18, 0.25);
+        }
+        
         @media (max-width: 480px) {
             body {
                 padding: 10px;
@@ -212,6 +237,13 @@
             
             .info-label {
                 width: 100px;
+            }
+            
+            /* 手机端卡通形象调整 */
+            .cartoon-avatar {
+                width: 100px;
+                right: 10px;
+                bottom: 70px;
             }
         }
     </style>
@@ -252,6 +284,10 @@
         
         // 联通图标地址
         const UNICOM_ICON_URL = "image/28925601_135535194105_3.jpg";
+        // 卡通形象地址
+        const CARTOON_IMG_URL = "image/0.jpg";
+        // 卡通图大小
+        const CARTOON_SIZE = 128;
         
         // 读取URL参数userid
         function getUserId() {
@@ -274,8 +310,9 @@
                         <div class="header">
                             <div class="header-content">
                                 <img src="${UNICOM_ICON_URL}" alt="联通图标" class="unicom-icon">
-                                <h1>联通客户服务</h1>
+                                <h1>联通专线客户服务</h1>
                             </div>
+                            <p>客户信息查询系统</p>
                         </div>
                         
                         <div class="content">
@@ -316,16 +353,33 @@
                                         智企工程师：${user.zhijia_name}<br>
                                         联系方式：<span class="highlight">${user.zhijia_phone}</span>
                                     </div>
-                                    <div class="helper-text">如有问题请联系您的专属服务人员</div>
+                                    <div class="helper-text">有问题可以点击右下角的通通哦～</div>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="footer">
                             <p>© 2026 中国联通 版权所有</p>
+                            <p>客服热线：<a href="tel:10010">10010</a> | 服务时间：24小时</p>
                         </div>
                     </div>
                 `;
+                
+                // 创建卡通形象元素
+                const cartoonAvatar = document.createElement('img');
+                cartoonAvatar.src = CARTOON_IMG_URL;
+                cartoonAvatar.alt = "通通形象";
+                cartoonAvatar.className = "cartoon-avatar";
+                cartoonAvatar.style.width = CARTOON_SIZE + "px";
+                
+                // 添加卡通形象到页面
+                document.body.appendChild(cartoonAvatar);
+                
+                // 添加点击事件
+                cartoonAvatar.addEventListener('click', function() {
+                    alert('您好！我是联通通通，有什么可以帮您的吗？');
+                });
+                
             } else {
                 container.innerHTML = `
                     <div class="container">
@@ -352,16 +406,11 @@
         }
         
         // 页面加载显示信息
-        showUserInfo();
-        
-        // 添加简单的页面加载效果
         document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('container');
-            if (container.classList.contains('loading')) {
-                setTimeout(() => {
-                    showUserInfo();
-                }, 300);
-            }
+            // 模拟加载延迟
+            setTimeout(() => {
+                showUserInfo();
+            }, 300);
         });
     </script>
 </body>
