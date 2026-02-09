@@ -3,222 +3,368 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>山东联通用户自助服务</title>
+    <title>联通专线客户服务信息</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: "微软雅黑", Arial, "Microsoft YaHei UI";
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-            padding: 0 20px;
+            background-color: #f5f5f5;
             min-height: 100vh;
+            padding: 20px;
+            color: #333;
         }
-
-        /* 顶部红色横幅 */
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
         .header {
-            background-color: #e60012;
+            background: linear-gradient(135deg, #e60012 0%, #c40010 100%);
             color: white;
+            padding: 24px 20px;
             text-align: center;
-            padding: 14px 20px;
-            border-radius: 12px 12px 0 0;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .header-content {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
+            margin-bottom: 10px;
         }
-
-        .header img {
-            width: 30px;
-            height: 30px;
-            vertical-align: middle;
+        
+        .unicom-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background-color: white;
+            padding: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-
-        /* 主容器 */
-        .container {
-            max-width: 550px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            padding: 20px;
+        
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
-
-        /* 每个功能项 */
-        .item {
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 0 20px 20px;
+        }
+        
+        .user-info {
+            padding: 20px 0;
+            line-height: 1.6;
+            font-size: 15px;
+            color: #666;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .info-item {
+            margin-bottom: 12px;
             display: flex;
             align-items: flex-start;
-            padding: 16px 0;
-            border-bottom: 1px solid #eee;
-            transition: background-color 0.2s ease;
         }
-
-        .item:last-child {
-            border-bottom: none;
+        
+        .info-label {
+            width: 120px;
+            color: #666;
+            font-weight: normal;
         }
-
-        .item:hover {
-            background-color: #f9f9f9;
-        }
-
-        .item-icon {
-            width: 50px;
-            height: 50px;
-            margin-right: 16px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #e60012;
-            color: white;
-            border-radius: 8px;
-            font-size: 24px;
-        }
-
-        .item-content {
+        
+        .info-value {
             flex: 1;
-            font-size: 17px;
-            color: #4a5568;
+            color: #333;
+            font-weight: 500;
         }
-
-        .item-title {
-            font-size: 18px;
+        
+        .status-normal {
+            color: #2ecc71;
+            font-weight: 600;
+        }
+        
+        .status-overdue {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .highlight {
+            color: #e60012;
+            font-weight: 600;
+        }
+        
+        .contact-section {
+            margin-top: 20px;
+        }
+        
+        .contact-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .contact-title {
+            font-size: 16px;
             font-weight: 600;
             color: #e60012;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #f0f0f0;
         }
-
-        .item-desc {
-            font-size: 16px;
-            color: #555;
+        
+        .contact-details {
+            font-size: 15px;
             line-height: 1.6;
+            color: #444;
         }
-
-        /* 使用 Unicode 图标 */
-        .icon-question::before { content: "❓"; }
-        .icon-network::before { content: "🌐"; }
-        .icon-scan::before { content: "🔍"; }
-        .icon-search::before { content: "🔍"; }
-
-        /* 底部版权 */
-        .footer {
-            margin-top: 20px;
-            text-align: center;
+        
+        .helper-text {
             font-size: 14px;
             color: #888;
-            padding: 12px;
-            background-color: #f5f7fa;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            margin-top: 8px;
+            font-style: italic;
         }
-
-        /* 卡通形象 */
-        .cartoon-avatar {
-            position: fixed;
-            right: 20px;
-            bottom: 80px;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid white;
-            outline: 2px solid #e60012;
-            box-shadow: 0 8px 20px rgba(230, 0, 18, 0.15);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #999;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
         }
-
-        .cartoon-avatar:hover {
-            transform: scale(1.08) translateY(-4px);
-            box-shadow: 0 12px 28px rgba(230, 0, 18, 0.25);
+        
+        .footer a {
+            color: #e60012;
+            text-decoration: none;
         }
-
-        /* 手机端适配 */
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 18px;
+            color: #e74c3c;
+            line-height: 1.6;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 18px;
+            color: #666;
+        }
+        
         @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 8px;
+            }
+            
             .header {
-                font-size: 20px;
-                padding: 12px 16px;
+                padding: 20px 15px;
             }
-            .item {
-                padding: 14px 0;
-            }
-            .item-icon {
-                width: 40px;
-                height: 40px;
+            
+            .header h1 {
                 font-size: 20px;
             }
-            .item-content {
-                font-size: 15px;
+            
+            .header-content {
+                gap: 12px;
             }
-            .item-title {
-                font-size: 16px;
+            
+            .unicom-icon {
+                width: 42px;
+                height: 42px;
             }
-            .cartoon-avatar {
-                width: 80px;
-                height: 80px;
-                right: 10px;
-                bottom: 60px;
+            
+            .content {
+                padding: 0 15px 15px;
+            }
+            
+            .info-label {
+                width: 100px;
             }
         }
     </style>
 </head>
 <body>
+    <div id="container" class="loading">加载中...</div>
 
-    <!-- 顶部红色横幅 -->
-    <div class="header">
-        <img src="image/28925601_135535194105_3.jpg" alt="联通图标">
-        山东联通用户自助服务
-    </div>
-
-    <!-- 主体内容 -->
-    <div class="container">
-        <!-- 常见问题 -->
-        <div class="item">
-            <div class="item-icon icon-question"></div>
-            <div class="item-content">
-                <div class="item-title">常见问题</div>
-                <div class="item-desc">为了提升您的上网体验，您可以点击“常见问题”按钮，了解家庭网络设备安全使用的注意事项，学习常见问题的处理方法，提升家庭网络故障自维能力。</div>
-            </div>
-        </div>
-
-        <!-- FTTR诊断 -->
-        <div class="item">
-            <div class="item-icon icon-network"></div>
-            <div class="item-content">
-                <div class="item-title">FTTR诊断</div>
-                <div class="item-desc">如果您使用的是FTTR光猫，请点击“FTTR诊断”按钮，输入宽带账号，进行故障诊断。</div>
-            </div>
-        </div>
-
-        <!-- 一碰扫码 -->
-        <div class="item">
-            <div class="item-icon icon-scan"></div>
-            <div class="item-content">
-                <div class="item-title">一碰扫码</div>
-                <div class="item-desc">如果您不知道自己家庭的宽带账号或IPTV账号，请点击“一碰扫码”按钮。扫描光猫或机顶盒未获取业务号码。如果扫描光猫，请对准“MAC码或者SN码”；如果扫描机顶盒，请对准“MAC码或者STBID码”。</div>
-            </div>
-        </div>
-
-        <!-- 号码查询 -->
-        <div class="item">
-            <div class="item-icon icon-search"></div>
-            <div class="item-content">
-                <div class="item-title">号码查询</div>
-                <div class="item-desc">如果您不方便对光猫/机顶盒进行扫码，可以输入身份证号码或者固定电话话务号进行业务号码查询，请点击“号码查询”按钮。</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 版权声明 -->
-    <div class="footer">
-        ©2026 中国联通 版权所有
-    </div>
-
-    <!-- 卡通形象 -->
-    <img src="image/0.jpg" alt="通通" class="cartoon-avatar">
-
+    <script>
+        // ========== 配置区 ==========
+        const userList = {
+            "001": {
+                num: "69657134",
+                status: "正常",
+                user_name: "王",
+                zhijia_name: "刘希壮",
+                zhijia_phone: "67604888",
+                prod_name: "固话",
+                khjl_name: "张三",
+                khjl_phone: "15615310001",
+                a_part: "axxx",
+                z_part: "zxxx",
+                ip: "134.33.0.1"
+            },
+            "002": {
+                num: "87207037",
+                status: "欠费",
+                user_name: "李",
+                zhijia_name: "刘希壮",
+                zhijia_phone: "67604888",
+                prod_name: "宽带",
+                khjl_name: "李四",
+                khjl_phone: "15615310002",
+                a_part: "axxx",
+                z_part: "zxxx",
+                ip: "134.33.0.2"
+            },
+        };
+        
+        // 联通图标地址
+        const UNICOM_ICON_URL = "image/28925601_135535194105_3.jpg";
+        
+        // 读取URL参数userid
+        function getUserId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('userid') || '';
+        }
+        
+        // 显示客户信息
+        function showUserInfo() {
+            const container = document.getElementById('container');
+            const userId = getUserId();
+            const user = userList[userId];
+            
+            if (user) {
+                // 根据状态选择CSS类
+                const statusClass = user.status === "正常" ? "status-normal" : "status-overdue";
+                
+                container.innerHTML = `
+                    <div class="container">
+                        <div class="header">
+                            <div class="header-content">
+                                <img src="${UNICOM_ICON_URL}" alt="联通图标" class="unicom-icon">
+                                <h1>联通专线客户服务</h1>
+                            </div>
+                            <p>客户信息查询系统</p>
+                        </div>
+                        
+                        <div class="content">
+                            <div class="user-info">
+                                <div class="info-item">
+                                    <div class="info-label">客户姓名：</div>
+                                    <div class="info-value">${user.user_name}先生/女士</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">业务类型：</div>
+                                    <div class="info-value">联通${user.prod_name}业务</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">业务号码：</div>
+                                    <div class="info-value">${user.num}</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">业务状态：</div>
+                                    <div class="info-value ${statusClass}">${user.status}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-section">
+                                <div class="contact-item">
+                                    <div class="contact-title">网络配置信息</div>
+                                    <div class="contact-details">
+                                        A端配置：${user.a_part}<br>
+                                        Z端配置：${user.z_part}<br>
+                                        分配IP地址：${user.ip}
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-item">
+                                    <div class="contact-title">专属服务人员</div>
+                                    <div class="contact-details">
+                                        客户经理：${user.khjl_name}<br>
+                                        联系方式：<span class="highlight">${user.khjl_phone}</span><br><br>
+                                        智企工程师：${user.zhijia_name}<br>
+                                        联系方式：<span class="highlight">${user.zhijia_phone}</span>
+                                    </div>
+                                    <div class="helper-text">如有问题请联系您的专属服务人员</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="footer">
+                            <p>© 2026 中国联通 版权所有</p>
+                            <p>客服热线：<a href="tel:10010">10010</a> | 服务时间：24小时</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="container">
+                        <div class="header">
+                            <div class="header-content">
+                                <img src="${UNICOM_ICON_URL}" alt="联通图标" class="unicom-icon">
+                                <h1>联通专线客户服务</h1>
+                            </div>
+                            <p>客户信息查询系统</p>
+                        </div>
+                        
+                        <div class="error-message">
+                            未找到该专线客户信息<br>
+                            请检查URL中的userid参数是否正确
+                        </div>
+                        
+                        <div class="footer">
+                            <p>© 2026 中国联通 版权所有</p>
+                            <p>客服热线：<a href="tel:10010">10010</a></p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        // 页面加载显示信息
+        showUserInfo();
+        
+        // 添加简单的页面加载效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('container');
+            if (container.classList.contains('loading')) {
+                setTimeout(() => {
+                    showUserInfo();
+                }, 300);
+            }
+        });
+    </script>
 </body>
 </html>
