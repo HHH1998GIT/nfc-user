@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>联通互联网专线信息</title>
     <style>
+        /* 样式保持不变（与用户最后提供的版本一致） */
         * {
             margin: 0;
             padding: 0;
@@ -209,10 +210,9 @@
         .remark-section {
             margin-top: 20px;
             padding: 15px 20px 20px;
-            background-color: #fff; /* 白色背景，与其他信息区块一致 */
-            border: none;            /* 移除边框 */
-            border-radius: 0;        /* 移除圆角 */
-            /* 添加上方分隔线，与下方一致 */
+            background-color: #fff;
+            border: none;
+            border-radius: 0;
             border-top: 1px solid #eee;
         }
         
@@ -222,7 +222,7 @@
             color: #e60012;
             margin-bottom: 10px;
             padding-bottom: 5px;
-            border-bottom: 1px solid #f0f0f0; /* 与 contact-title 保持一致 */
+            border-bottom: 1px solid #f0f0f0;
         }
         
         .remark-box {
@@ -237,7 +237,6 @@
             background-color: #fff;
             transition: border-color 0.2s, background-color 0.2s;
             cursor: pointer;
-            /* 优化行间距，与上方内容一致 */
             line-height: 1.6;
         }
         
@@ -254,7 +253,6 @@
         
         .remark-box.disabled {
             background-color: #f9f9f9;
-            /* 文字颜色改为深色，与上面信息一致 */
             color: #333;
             cursor: pointer;
         }
@@ -301,7 +299,7 @@
             cursor: pointer;
             transition: background-color 0.2s;
             margin-top: 15px;
-            display: none; /* 默认隐藏 */
+            display: none;
         }
         
         .save-btn:hover {
@@ -358,12 +356,29 @@
             }
         }
     </style>
+    <!-- 引入 Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
     <div id="container" class="loading">加载中...</div>
 
     <script>
-        // ========== 配置区 ==========
+        // ========== Firebase 配置（请替换为您的项目配置） ==========
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL", // 例如：https://your-project.firebaseio.com
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        // 初始化 Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // ========== 用户数据配置 ==========
         const userList = {
             "001": {
                 num: "69657134",
@@ -408,7 +423,7 @@
             return urlParams.get('userid') || '';
         }
         
-        // 初始化备注框交互（包括保存按钮和本地存储）
+        // 初始化备注框交互（包括保存按钮和 Firebase 同步）
         function initRemark(userId) {
             const remarkBox = document.getElementById('remarkBox');
             const passwordWrapper = document.getElementById('passwordWrapper');
@@ -416,22 +431,29 @@
             const saveBtn = document.getElementById('saveRemarkBtn');
             
             if (!remarkBox || !passwordWrapper || !passwordInput || !saveBtn) return;
+
+            // 监听 Firebase 数据变化（实时同步）
+            const remarkRef = database.ref('remarks/' + userId);
+            remarkRef.on('value', (snapshot) => {
+                const remoteRemark = snapshot.val();
+                if (remoteRemark !== null) {
+                    // 更新文本框内容，但注意不要覆盖用户正在编辑的内容
+                    // 简单处理：如果备注框未获得焦点（或未处于编辑状态），则更新
+                    if (document.activeElement !== remarkBox) {
+                        remarkBox.value = remoteRemark;
+                    }
+                } else {
+                    remarkBox.value = ''; // 无数据时清空
+                }
+            });
             
-            // 从localStorage加载该用户的备注（如果存在）
-            const savedRemark = localStorage.getItem(`remark_${userId}`);
-            if (savedRemark) {
-                remarkBox.value = savedRemark;
-            }
-            
+            // 从 Firebase 加载该用户的备注（初始加载，上面监听已处理）
             // 初始状态：保存按钮隐藏
             saveBtn.style.display = 'none';
             
             // 点击备注框时显示密码输入区域
             remarkBox.addEventListener('click', function(e) {
-                // 如果已经解锁可编辑，则不需要再验证
                 if (!remarkBox.classList.contains('disabled')) return;
-                
-                // 显示密码输入区域
                 passwordWrapper.classList.add('show');
                 passwordInput.focus();
             });
@@ -439,29 +461,32 @@
             // 密码输入实时验证
             passwordInput.addEventListener('input', function() {
                 if (this.value === '0531') {
-                    // 密码正确：解锁备注框，显示保存按钮，隐藏密码区域
                     remarkBox.classList.remove('disabled');
                     remarkBox.classList.add('editable');
                     remarkBox.removeAttribute('readonly');
-                    remarkBox.focus(); // 让备注框获得焦点
-                    saveBtn.style.display = 'block'; // 显示保存按钮
+                    remarkBox.focus();
+                    saveBtn.style.display = 'block';
                     passwordWrapper.classList.remove('show');
-                    this.value = ''; // 清空密码框
+                    this.value = '';
                 }
             });
             
-            // 密码框失去焦点时，如果内容为空，则隐藏密码区域（便于下次点击重新显示）
             passwordInput.addEventListener('blur', function() {
                 if (this.value === '') {
                     passwordWrapper.classList.remove('show');
                 }
             });
             
-            // 保存按钮点击事件
+            // 保存按钮点击事件 - 写入 Firebase
             saveBtn.addEventListener('click', function() {
-                const remarkContent = remarkBox.value.trim();  // 允许空字符串
-                localStorage.setItem(`remark_${userId}`, remarkContent);
-                alert('备注已保存');
+                const remarkContent = remarkBox.value.trim();
+                remarkRef.set(remarkContent)
+                    .then(() => {
+                        alert('备注已保存到云端');
+                    })
+                    .catch((error) => {
+                        alert('保存失败：' + error.message);
+                    });
             });
         }
         
@@ -471,7 +496,7 @@
             const userId = getUserId();
             const user = userList[userId];
             
-            // 公共的备注框HTML（放在版权信息上方），包含保存按钮（初始隐藏）
+            // 公共的备注框HTML
             const remarkHTML = `
                 <div class="remark-section">
                     <div class="remark-label">备注</div>
@@ -485,7 +510,6 @@
             `;
             
             if (user) {
-                // 根据状态选择CSS类
                 const statusClass = user.status === "正常" ? "status-normal" : "status-overdue";
                 
                 container.innerHTML = `
@@ -537,15 +561,16 @@
                                     </div>
                                     <div class="helper-text">有问题可以点击右下角的通通哦～</div>
                                 </div>
-                        </div>
-                        
-                        <!-- 备注框放在版权信息上方 -->
-                        ${remarkHTML}
-                        
-                        <div class="footer">
-                            <p>© 2026 中国联通 版权所有</p>
-                        </div>
-                    </div>
+                            </div> <!-- contact-section 闭合 -->
+                            
+                            <!-- 备注框放在版权信息上方 -->
+                            ${remarkHTML}
+                            
+                            <div class="footer">
+                                <p>© 2026 中国联通 版权所有</p>
+                            </div>
+                        </div> <!-- content 闭合 -->
+                    </div> <!-- container 闭合 -->
                 `;
                 
                 // 创建卡通形象元素
@@ -554,11 +579,8 @@
                 cartoonAvatar.alt = "通通形象";
                 cartoonAvatar.className = "cartoon-avatar";
                 cartoonAvatar.style.width = CARTOON_SIZE + "px";
-                
-                // 添加卡通形象到页面
                 document.body.appendChild(cartoonAvatar);
                 
-                // 添加点击事件
                 cartoonAvatar.addEventListener('click', function() {
                     alert('您好！我是联通通通，有什么可以帮您的吗？');
                 });
@@ -588,13 +610,12 @@
                 `;
             }
             
-            // 初始化备注框交互，传入当前用户ID
+            // 初始化备注框交互
             initRemark(userId);
         }
         
         // 页面加载显示信息
         document.addEventListener('DOMContentLoaded', function() {
-            // 模拟加载延迟
             setTimeout(() => {
                 showUserInfo();
             }, 300);
