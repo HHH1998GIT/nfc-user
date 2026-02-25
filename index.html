@@ -212,6 +212,8 @@
             background-color: #fff; /* 白色背景，与其他信息区块一致 */
             border: none;            /* 移除边框 */
             border-radius: 0;        /* 移除圆角 */
+            /* 添加上方分隔线，与下方一致 */
+            border-top: 1px solid #eee;
         }
         
         .remark-label {
@@ -235,6 +237,8 @@
             background-color: #fff;
             transition: border-color 0.2s, background-color 0.2s;
             cursor: pointer;
+            /* 优化行间距，与上方内容一致 */
+            line-height: 1.6;
         }
         
         .remark-box:focus {
@@ -250,7 +254,8 @@
         
         .remark-box.disabled {
             background-color: #f9f9f9;
-            color: #aaa;
+            /* 文字颜色改为深色，与上面信息一致 */
+            color: #333;
             cursor: pointer;
         }
         
