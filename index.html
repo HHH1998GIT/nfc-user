@@ -283,7 +283,7 @@
             margin-top: 5px;
         }
         
-        /* 保存按钮样式 */
+        /* 保存按钮样式 - 默认隐藏 */
         .save-btn {
             width: 100%;
             padding: 12px;
@@ -294,18 +294,13 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s, opacity 0.2s;
+            transition: background-color 0.2s;
             margin-top: 15px;
+            display: none; /* 默认隐藏 */
         }
         
-        .save-btn:hover:not(:disabled) {
+        .save-btn:hover {
             background-color: #c40010;
-        }
-        
-        .save-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-            opacity: 0.6;
         }
         
         @media (max-width: 480px) {
@@ -406,8 +401,8 @@
             return urlParams.get('userid') || '';
         }
         
-        // 初始化备注框交互（包括保存按钮）
-        function initRemark() {
+        // 初始化备注框交互（包括保存按钮和本地存储）
+        function initRemark(userId) {
             const remarkBox = document.getElementById('remarkBox');
             const passwordWrapper = document.getElementById('passwordWrapper');
             const passwordInput = document.getElementById('passwordInput');
@@ -415,8 +410,14 @@
             
             if (!remarkBox || !passwordWrapper || !passwordInput || !saveBtn) return;
             
-            // 初始状态：保存按钮禁用
-            saveBtn.disabled = true;
+            // 从localStorage加载该用户的备注（如果存在）
+            const savedRemark = localStorage.getItem(`remark_${userId}`);
+            if (savedRemark) {
+                remarkBox.value = savedRemark;
+            }
+            
+            // 初始状态：保存按钮隐藏
+            saveBtn.style.display = 'none';
             
             // 点击备注框时显示密码输入区域
             remarkBox.addEventListener('click', function(e) {
@@ -431,12 +432,12 @@
             // 密码输入实时验证
             passwordInput.addEventListener('input', function() {
                 if (this.value === '0531') {
-                    // 密码正确：解锁备注框，启用保存按钮，隐藏密码区域
+                    // 密码正确：解锁备注框，显示保存按钮，隐藏密码区域
                     remarkBox.classList.remove('disabled');
                     remarkBox.classList.add('editable');
                     remarkBox.removeAttribute('readonly');
                     remarkBox.focus(); // 让备注框获得焦点
-                    saveBtn.disabled = false; // 启用保存按钮
+                    saveBtn.style.display = 'block'; // 显示保存按钮
                     passwordWrapper.classList.remove('show');
                     this.value = ''; // 清空密码框
                 }
@@ -456,11 +457,10 @@
                     alert('备注内容不能为空');
                     return;
                 }
-                // 这里可以扩展为保存到localStorage或发送到服务器
-                // 示例：保存到localStorage
-                // localStorage.setItem('userRemark', remarkContent);
-                alert(`备注已保存：\n${remarkContent}`);
-                // 可选：保存后不清空，但可添加其他逻辑
+                // 保存到localStorage，以用户ID为key
+                localStorage.setItem(`remark_${userId}`, remarkContent);
+                alert('备注已保存');
+                // 保存后按钮继续保持显示（因为仍处于编辑状态）
             });
         }
         
@@ -470,7 +470,7 @@
             const userId = getUserId();
             const user = userList[userId];
             
-            // 公共的备注框HTML（放在版权信息上方），包含保存按钮
+            // 公共的备注框HTML（放在版权信息上方），包含保存按钮（初始隐藏）
             const remarkHTML = `
                 <div class="remark-section">
                     <div class="remark-label">备注</div>
@@ -532,7 +532,7 @@
                                     <div class="contact-details">
                                         客户经理：${user.khjl_name}<br>
                                         联系方式：<span class="highlight">${user.khjl_phone}</span><br><br>
-                                        #智企工程师：${user.zhijia_name}<br>
+                                        智企工程师：${user.zhijia_name}<br>
                                         联系方式1：<span class="highlight">${user.zhijia_phone}</span>
                                         联系方式2：<span class="highlight">${user.zhijia_phone}</span>
                                         联系方式3：<span class="highlight">${user.zhijia_phone}</span>
@@ -591,8 +591,8 @@
                 `;
             }
             
-            // 初始化备注框交互
-            initRemark();
+            // 初始化备注框交互，传入当前用户ID
+            initRemark(userId);
         }
         
         // 页面加载显示信息
