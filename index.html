@@ -454,15 +454,9 @@
             
             // 保存按钮点击事件
             saveBtn.addEventListener('click', function() {
-                const remarkContent = remarkBox.value.trim();
-                if (remarkContent === '') {
-                    alert('备注内容不能为空');
-                    return;
-                }
-                // 保存到localStorage，以用户ID为key
+                const remarkContent = remarkBox.value.trim();  // 允许空字符串
                 localStorage.setItem(`remark_${userId}`, remarkContent);
                 alert('备注已保存');
-                // 保存后按钮继续保持显示（因为仍处于编辑状态）
             });
         }
         
@@ -530,11 +524,8 @@
                                 </div>
                                 
                                 <div class="contact-item">
-                                    <div class="contact-title">专属服务人员</div>
+                                    <div class="contact-title">专属服务人员联系方式</div>
                                     <div class="contact-details">
-                                        客户经理：${user.khjl_name}<br>
-                                        联系方式：<span class="highlight">${user.khjl_phone}</span><br><br>
-                                        #智企工程师：${user.zhijia_name}<br>
                                         联系方式1：<span class="highlight">${user.zhijia_phone}</span><br>
                                         联系方式2：<span class="highlight">${user.zhijia_phone1}</span><br>
                                         联系方式3：<span class="highlight">${user.zhijia_phone2}</span>
